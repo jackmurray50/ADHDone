@@ -9,7 +9,7 @@ namespace ADHDone.TaskList.Modules
     /// <summary>
     /// Contains information about a Task.
     /// </summary>
-    internal struct Task
+    internal struct ToDoTask
     {
         string Summary { get; set; }
         string Description { get; set; }
@@ -21,6 +21,19 @@ namespace ADHDone.TaskList.Modules
         DateTime ToFinishDate { get; set; }
         string LocationType { get; set; } 
 
-        List<Task> children { get; set; }
+        List<ToDoTask> children { get; set; } 
+        ToDoTask parent { get; set; }
+
+        internal static ToDoTask CreateRoot(string name)
+        {
+            ToDoTask root = new ToDoTask();
+            root.Summary = name;
+            root.Description = "";
+            root.Category = "root";
+            root.Priority = null;
+            root.children = new();
+
+            return root;
+        }
     }
 }
