@@ -4,6 +4,7 @@ using System.Text.Json.Nodes;
 using ADHDone.AI.Connections;
 using ADHDone.AI;
 using ADHDone.TaskList.Modules;
+using ADHDone.AI.Prompts;
 
 namespace ADHDone
 {
@@ -12,6 +13,7 @@ namespace ADHDone
         Dictionary<string, ToDoTask> allTasks;
         ToDoTask root;
         ToDoTask activeTask;
+        GlobalSettings gs;
         public MainPage()
         {
             //On initialization, pull information from storage
@@ -21,8 +23,7 @@ namespace ADHDone
 
         private async void LoadRoot()
         {
-            bool reachable = NetworkHelpers.NetworkHelpers.CheckIfSiteIsReachable("http://www.google.com/");
-            bool reachable2 = NetworkHelpers.NetworkHelpers.CheckIfSiteIsReachable("http://10.0.2.2:11434/");
+            gs = GlobalSettings.RetrieveGlobalSettings();
             //Check if there's an existing Tasks file. If not, create it.
             if (File.Exists(@"Tasks.json"))
             {
@@ -33,9 +34,9 @@ namespace ADHDone
             {
                 //Default tasks file didn't exist; create one.
                 allTasks = await CreateDefaultTasks();
+                File.WriteAllText(@"Tasks.json", JsonSerializer.Serialize(allTasks));
             }
             //Pull in settings
-            GlobalSettings gs = new GlobalSettings();
             root = allTasks[gs.DefaultTask];
             activeTask = root;
         }
@@ -57,7 +58,7 @@ namespace ADHDone
             foreach(string prompt in TasksToAdd)
             {
                 // Use AI to parse the prompt into a ToDoTask object
-                ToDoTask newTask = await AIProvider.SendPromptAsync<ToDoTask>(prompt + ". " + TasksPromptDictionary.prompts[TasksPromptDictionary.Prompt.ParseTaskFromUserInput]);
+                ToDoTask newTask = await AIProvider.SendPromptAsync<ToDoTask>(new CreateTaskPrompt(prompt, gs.Locations, gs.Categories).ToString());
                 // Add the new task to the default root task
                 TasksToReturn["Default"].Children.Add(newTask);
             }
