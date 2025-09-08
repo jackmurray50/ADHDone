@@ -7,26 +7,28 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
 using System.Text.Json;
+using ADHDone.NetworkHelpers;
 
 namespace ADHDone.AI.Connections
 {
 
 
-    internal class RemoteDebugAIProvider : IAIProvider
+    public class RemoteDebugAIProvider : IAIProvider
     {
         IChatClient chatClient;
         List<ChatMessage> chatHistory = new();
-        RemoteDebugAIProvider()
-        {
-            chatClient =
-                new OllamaApiClient(new Uri(
+        Uri uri = new Uri(
 #if DEBUG
-                    "http://10.0.2.2:11434/"
-#endif
-#if RELEASE
                     "http://localhost:11434/"
 #endif
-                    ), "gpt-oss:20b");
+#if RELEASE
+                    "http://10.0.2.2:11434/"
+#endif
+);
+        public RemoteDebugAIProvider()
+        {
+            chatClient =
+                new OllamaApiClient(uri, "gpt-oss:20b");
         }
         public T SendPrompt<T>(string prompt)
         {
@@ -45,7 +47,7 @@ namespace ADHDone.AI.Connections
             }
             chatHistory.Add(new ChatMessage(ChatRole.Assistant, response));
 
-            return JsonSerializer.Deserialize<T>(response) ?? throw new FormatException($"Incorrect response\nPrompt:{prompt}\nResponse:{response}");
+              return JsonSerializer.Deserialize<T>(response) ?? throw new FormatException($"Incorrect response\nPrompt:{prompt}\nResponse:{response}");
             throw new NotImplementedException();
         }
     }
