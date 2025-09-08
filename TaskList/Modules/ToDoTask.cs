@@ -9,20 +9,20 @@ namespace ADHDone.TaskList.Modules
     /// <summary>
     /// Contains information about a Task.
     /// </summary>
-    internal struct ToDoTask
+    internal class ToDoTask
     {
-        string Summary { get; set; }
-        string Description { get; set; }
-        string Category { get; set; }
+        public string Summary { get; set; }
+        public string Description { get; set; }
+        public string Category { get; set; }
 
-        Priority Priority { get; set; }
-        DateTime MinEstimatedCompletionTime { get; set; }
-        DateTime MaxEstimatedCompletionTime { get; set; }
-        DateTime ToFinishDate { get; set; }
-        string LocationType { get; set; } 
+        public Priority Priority { get; set; }
+        public DateTime MinEstimatedCompletionTime { get; set; }
+        public DateTime MaxEstimatedCompletionTime { get; set; }
+        public DateTime ToFinishDate { get; set; }
+        public string LocationType { get; set; } 
 
-        List<ToDoTask> children { get; set; } 
-        ToDoTask parent { get; set; }
+        public List<ToDoTask> Children { get; set; } 
+        public ToDoTask ParentToDoTask { get; set; }
 
         internal static ToDoTask CreateRoot(string name)
         {
@@ -31,7 +31,7 @@ namespace ADHDone.TaskList.Modules
             root.Description = "";
             root.Category = "root";
             root.Priority = null;
-            root.children = new();
+            root.Children = new();
 
             return root;
         }
