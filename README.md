@@ -5,11 +5,11 @@ AI-enhanced task builder / reminder designed for people with ADHD
 Feature / Task list:
 
 	MVP:
-	Portable AI, using Ollama
-	Prompt library
+	[✓] Portable AI, using Ollama
+	[✓] Prompt library
 		- Prompts should be designed in a way that their output is in a standardized format
-	Input/output into AI
-	Storage of Tasks
+	[✓] Input/output into AI
+	[✓] Storage of Tasks
 		- JSON format to make life easy
 	GUI
 		- Tasks should have a Name, a Priority Number, and a time estimate
@@ -21,6 +21,7 @@ Feature / Task list:
 		- Should be non-intrusive, only notifying someone if they've not completed a task in a while
 	Custom priority types
 	Google maps integration? So things like "Go get groceries" can be estimated better, and notifications can be sent.
+ 	List of locations to help with the above
 	"Default" list of tasks which can be modified, to get the ball rolling. Stuff like "Take your pills" daily or "Do your laundry" weekly
 	Permission switcher and detailed explanation of what each permission is used for
 	Accessibility options
